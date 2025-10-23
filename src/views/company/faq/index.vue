@@ -122,7 +122,7 @@ const breads = [
 ];
 
 const headers = [
-  { text: t("LABELS.Question"), align: "start", sortable: false, value: "question" },
+  { text: t("LABELS.Questions"), align: "start", sortable: false, value: "question" },
   { text: t("LABELS.Status"), align: "start", sortable: false, value: "is_active" },
   { text: t("TITLES.actions"), align: "start", sortable: false, value: "actions" },
 ];
