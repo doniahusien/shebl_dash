@@ -1,0 +1,136 @@
+<template>
+  <div class="h-full flex flex-col">
+    <div class="bg-white rounded-3xl h-full shadow-md md:p-4 flex-1 flex flex-col">
+      <div class="bg-white p-3">
+        <loader v-if="loading" />
+
+        <div v-else-if="section">
+          <!-- Breadcrumb -->
+          <breadcrumbs
+            :icon="section.icon?.url"
+            :items="breads"
+            :title="localizedData.title"
+            back="/sections"
+            class="mb-7"
+          />
+
+          <!-- Section Details -->
+          <div class="grid md:grid-cols-3 gap-6">
+            <!-- Left side -->
+            <div>
+              <base-card class="shadow-sm border border-gray-100 p-4">
+                <div class="text-center">
+                  <img
+                    v-if="section.image?.url"
+                    :src="section.image.url"
+                    alt="Section image"
+                    class="w-48 h-48 rounded-2xl object-cover border-4 border-white shadow-lg mx-auto mb-4"
+                  />
+                  <h2 class="text-2xl font-bold text-gray-900">
+                    {{ localizedData.title }}
+                  </h2>
+                  <p class="text-sm text-gray-500 mt-1">
+                    {{ section.type }}
+                  </p>
+
+                  <div
+                    class="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full text-sm font-medium"
+                    :class="section.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+                  >
+                    <span
+                      class="w-2 h-2 rounded-full"
+                      :class="section.is_active ? 'bg-green-500' : 'bg-red-500'"
+                    ></span>
+                    {{ section.is_active ? $t('LABELS.active') : $t('LABELS.inactive') }}
+                  </div>
+                </div>
+              </base-card>
+            </div>
+
+            <!-- Right side -->
+            <div class="md:col-span-2">
+              <base-card class="shadow-sm border border-gray-100 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <svg-icon name="info" />
+                  {{ $t('LABELS.section_details') }}
+                </h3>
+
+                <div class="space-y-4">
+                  <div>
+                    <h4 class="text-sm text-gray-500 mb-1">
+                      {{ $t('LABELS.title') }}
+                    </h4>
+                    <p class="text-gray-900 font-medium">
+                      {{ localizedData.title }}
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 class="text-sm text-gray-500 mb-1">
+                      {{ $t('LABELS.description') }}
+                    </h4>
+                    <div
+                      class="prose max-w-none text-gray-800"
+                      :dir="locale === 'ar' ? 'rtl' : 'ltr'"
+                      v-html="localizedData.description"
+                    ></div>
+                  </div>
+                </div>
+              </base-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
+import { useI18n } from "vue-i18n";
+
+const { t, locale } = useI18n();
+const route = useRoute();
+
+const loading = ref(false);
+const section = ref(null);
+const breads = ref([]);
+
+// 🧠 Dynamically choose English or Arabic content
+const localizedData = computed(() => {
+  if (!section.value) return {};
+  return locale.value === "ar" ? section.value.ar : section.value.en;
+});
+
+function fetchSection() {
+  loading.value = true;
+  axios
+    .get(`sections/${route.params.id}`)
+    .then((res) => {
+      section.value = res.data.data;
+      setBreadcrumbs();
+    })
+    .finally(() => (loading.value = false));
+}
+
+function setBreadcrumbs() {
+  breads.value = [
+    { name: t("TITLES.home"), path: "/", imgIcon: "menu-setup.svg" },
+    { name: t("LABELS.sections"), path: "/sections" },
+    {
+      path: `/sections/show/${route.params.id}`,
+      name: localizedData.value.title || t("LABELS.section_details"),
+    },
+  ];
+}
+
+onMounted(fetchSection);
+</script>
+
+<style scoped>
+.prose p {
+  margin-bottom: 0.75rem;
+}
+</style>

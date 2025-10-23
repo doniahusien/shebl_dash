@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017", // Set the target to ES2017 or later
+    "lib": ["es2017", "dom"] // Include necessary libraries
+  },
+  "include": ["vite.config.ts"]
+}

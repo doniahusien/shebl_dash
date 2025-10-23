@@ -1,0 +1,30 @@
+.vue3-easy-data-table {
+  --easy-table-border: none;
+  // --easy-table-row-border: none;
+
+  --easy-table-header-font-size: 14px;
+  --easy-table-header-height: 60px;
+  --easy-table-header-font-color: #3a3a3a;
+  --easy-table-header-background-color: #f9fafc;
+  --easy-table-header-item-padding: 10px 15px;
+
+  --easy-table-body-row-font-size: 1rem;
+  --easy-table-body-item-padding: 5px 2px;
+
+  border-radius: 0 6px 6px 0;
+  overflow: hidden;
+
+  &::-webkit-scrollbar {
+    height: 7px;
+  }
+
+  &:has(.vue3-easy-data-table__message) {
+    thead {
+      display: none !important;
+    }
+
+    table {
+      height: 100%;
+    }
+  }
+}
