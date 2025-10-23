@@ -97,14 +97,16 @@ async function handleSubmit(values: schem) {
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${res.data.data.token}`;
-      setTimeout(() => toast.success(res.data.message), 400);
+      setTimeout(() => {
+        toast.success(res.data.message)
+        router.push("/")
+      }, 400);
 
       appAuth.token = res.data.data.token;
       appAuth.userData = res.data.data;
       appAuth.user_type = res.data.data.user_type;
       localStorage.setItem("shebl_global_user_type", res.data.data.user_type);
       appStore.is_auth = `Bearer ${res.data.data.token}`;
-      console.log("done ")
 
       loading.value = false;
     })

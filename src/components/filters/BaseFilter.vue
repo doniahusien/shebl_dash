@@ -1,6 +1,6 @@
 <template>
   <div class="filter flex gap-3 items-center flex-wrap mb-4" v-if="filterReady">
-<!--     <form
+    <form
       @submit.prevent="setFilter"
       class="flex items-center flex-grow flex-wrap gap-2 justify-between"
     >
@@ -91,7 +91,7 @@
         <p class="font-semibold text-2xl">{{ title }}</p>
       </div>
     </form>
- -->
+
     <div class="flex w-fit gap-2 items-center flex-wrap ms-auto mt-auto mb-1">
       <slot name="button"></slot>
 

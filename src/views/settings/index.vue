@@ -86,21 +86,14 @@
         </router-link>
 
         <button
-          v-if="checkPermission('settings', 'store')"
+        
           type="submit"
           class="base-btn rounded-md"
           :disabled="btnLoading"
         >
           {{ $t("BUTTONS.save") }}
         </button>
-        <button
-          type="button"
-          disabled
-          v-else
-          class="base-btn-red text-red-500 rounded-xl min-w-[90px] h-[42px] p-2"
-        >
-          {{ $t("BUTTONS.notAllow") }}
-        </button>
+      
       </div>
     </VeeForm>
   </div>
@@ -108,7 +101,6 @@
 
 <script setup>
 import axios from "axios";
-import { checkPermission } from "@/utils/permissions";
 import { onMounted, reactive, ref, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import * as yup from "yup";

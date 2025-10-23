@@ -43,7 +43,7 @@
             v-tooltip.bottom="
               title.length ? title.replace(/<[^>]*>/g, '') : title
             "
-            class="mb-1 font-semibold text-start whitespace-nowrap min-w-[100px] capitalize text-text"
+            class="mb-1 font-semibold py-6 text-start whitespace-nowrap min-w-[100px] capitalize text-text"
             :class="[
               $i18n.locale == 'ar' ? 'font-neo-sans' : 'font-switzer',
               titleClass,
@@ -62,7 +62,7 @@
             content: title.length ? title.replace(/<[^>]*>/g, '') : title,
             error: !title.length,
           }"
-          class="mb-1 font-semibold text-start whitespace-nowrap min-w-[100px] capitalize text-text"
+          class="mb-1 font-semibold  py-6 text-start whitespace-nowrap min-w-[100px] capitalize text-text"
           :class="[
             $i18n.locale == 'ar' ? 'font-neo-sans' : 'font-switzer',
             titleClass,
@@ -98,7 +98,7 @@
 
       <p
         :title="text.replace(/<[^>]*>/g, '')"
-        class="text-[12px] text-start text-sub line-clamp-2"
+        class="text-[12px] text-start text-sub py-6 line-clamp-2"
         v-if="subText"
         :class="[
           $i18n.locale == 'ar' ? 'font-neo-sans' : 'font-switzer',
@@ -107,15 +107,39 @@
       >
         {{ subText.replace(/<[^>]*>/g, "") }}
       </p>
+      <p
+  :title="text.replace(/<[^>]*>/g, '')"
+  class="text-[12px] text-start text-sub line-clamp-2"
+  v-if="subText"
+  :class="[
+    $i18n.locale == 'ar' ? 'font-neo-sans' : 'font-switzer',
+    textClass,
+  ]"
+>
+  {{ subText.replace(/<[^>]*>/g, "") }}
+</p>
+
+<p
+  v-if="description"
+  :title="description.replace(/<[^>]*>/g, '')"
+  class="text-[14px] text-start text-placeholder py-6 line-clamp-3"
+  :class="[
+    $i18n.locale == 'ar' ? 'font-neo-sans' : 'font-switzer',
+    textClass,
+  ]"
+>
+  {{ description.replace(/<[^>]*>/g, "") }}
+</p>
+
     </div>
   </div>
 </template>
 
 <script setup>
-import Tooltip from "primevue/tooltip";
 import Image from "primevue/image";
 
 defineProps([
+  "description",
   "image",
   "title",
   "text",

@@ -1,4 +1,35 @@
-{
+
+  {
+     "byTitle": "البحث بالعنوان",
+  "byQut": "البحث بالسؤال",
+  "byFeature": "البحث بالمميزة",
+  "byKey": "البحث بالكلمة المفتاحية",
+  "TYPES": {
+      "All":"الكل",
+    "main_banner": "البانر الرئيسي",
+    "about": "من نحن",
+    "why_us": "لماذا نحن",
+    "our_services": "خدماتنا",
+    "contact_info": "معلومات التواصل",
+    "about_banner": "بانر من نحن",
+    "goals": "أهدافنا",
+    "core_values": "القيم الأساسية",
+    "terms": "الشروط والأحكام",
+    "privacy_policy": "سياسة الخصوصية",
+
+    "why_us_feature": "ميزة لماذا نحن",
+    "our_services_feature": "ميزة خدماتنا",
+    "core_values_feature": "ميزة القيم الأساسية",
+    "goals_feature": "ميزة أهدافنا",
+    "our_vision":"رؤيتنا",
+    
+  "qa_banner": "بانر الاسئلة الشائعة",
+  "contact_banner": "بانر تواصل معنا",
+  "terms_banner": "بانر الاحكام",
+  "privacy_banner": "بانر الخصوصية"
+
+  }
+,
   "sidebar": {
     "countries": "الدول",
     "settings": "الاعدادات",
@@ -70,6 +101,8 @@
     "All Copyrights are reserved by": "جميع الحقوق محفوظة بواسطة"
   },
   "LABELS":{
+    
+    "Type":"النوع",
         "coming_soon_message": "هذه الصفحة قيد الإنشاء، ترقبوا قريباً!",
     "faq":"الاسئلة الشائعة",
     "sections": "الأقسام",

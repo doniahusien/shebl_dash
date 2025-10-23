@@ -6,14 +6,22 @@
       class="bg-white rounded-3xl h-full shadow-[0_7px_6px_0px,rgba(#B1B1B11A)] md:p-7 flex-1 flex flex-col"
     >
       <base-filter
-        v-if="items.length || dataFiltered"
         name="sections"
         :inputs="inputs"
         :btn-name="t(`BUTTONS.add`, { name: t('LABELS.section') })"
         icon="fas fa-plus"
-        :keyword="true"
+        :keyword="false"
         @action="$router.push('/sections/form')"
       />
+
+      <div class="mb-5 mt-2 flex items-center gap-3">
+        <input
+          v-model="searchKeyword"
+          type="text"
+             :placeholder="$t('byFeature')"
+          class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+      </div>
 
       <Loader v-if="loading" />
 
@@ -22,15 +30,19 @@
         <GlobalError v-else-if="errResponse?.status === 500" />
 
         <div v-else :class="!items.length ? 'h-full' : ''">
-          <data-table :headers="headers" :items="localizedItems" :loading="loading" hide-footer>
+          <data-table
+            :headers="headers"
+            :items="filteredItems"
+            :loading="loading"
+            hide-footer
+          >
             <template #loading>
               <loader class="py-7" />
             </template>
 
-            <!-- 🧩 Empty State -->
             <template #empty-message>
               <div
-                v-if="!$route.query.keyword && !$route.query.status"
+                v-if="!$route.query.status && !$route.query.type"
                 class="h-full flex flex-col items-center justify-center space-y-6"
               >
                 <div class="text-center">
@@ -55,27 +67,26 @@
               </div>
             </template>
 
-            <!-- 🧱 Columns -->
-            <template #item-title="{ title, image }">
-              <small-details-card :image="image?.url" :title="title" />
+            <template #item-image="{ image }">
+              <small-details-card :image="image?.url" />
             </template>
 
-            <template #item-type="{ type }">
-              <small-details-card :title="type" />
+            <template #item-title="{ title }">
+              <small-details-card :title="title" />
+            </template>
+
+            <template #item-type="{ typeName }">
+              <small-details-card :title="typeName" />
             </template>
 
             <template #item-is_active="{ is_active, id }">
               <div class="flex justify-start">
                 <global-switcher
                   :id="id"
-                  :hasMethod="true"
-                  method="POST"
                   :url="`sections/${id}`"
-                  :value="is_active"
+                  :method="'POST'"
                   :modalValue="is_active"
-                  @update:modalValue="
-                    items.find((item) => item.id === id).is_active = $event
-                  "
+                  @update:modalValue="items.find((item) => item.id === id).is_active = $event"
                 />
               </div>
             </template>
@@ -119,6 +130,7 @@ const loading = ref(true);
 const items = ref([]);
 const paginator = ref(null);
 const dataFiltered = ref(false);
+const searchKeyword = ref(""); 
 
 const breads = [
   { path: "/", name: t("TITLES.home") },
@@ -126,7 +138,8 @@ const breads = [
 ];
 
 const headers = [
-  { text: t("LABELS.image"), align: "start", sortable: false, value: "title" },
+  { text: t("LABELS.image"), align: "start", sortable: false, value: "image" },
+  { text: t("LABELS.name"), align: "start", sortable: false, value: "title" },
   { text: t("LABELS.type"), align: "start", sortable: false, value: "type" },
   { text: t("LABELS.Status"), align: "start", sortable: false, value: "is_active" },
   { text: t("TITLES.actions"), align: "start", sortable: false, value: "actions" },
@@ -134,36 +147,61 @@ const headers = [
 
 const inputs = [
   {
-    name: "status",
-    placeholder: "status",
+    name: "type",
+    placeholder: t("Type"),
     options: [
-      { name: t("STATUS.All"), id: "" },
-      { name: t("LABELS.Active"), id: 1 },
-      { name: t("LABELS.Inactive"), id: 0 },
+      { name: t("TYPES.All"), id: "" },
+      { name: t("TYPES.main_banner"), id: "main_banner" },
+      { name: t("TYPES.about"), id: "about" },
+      { name: t("TYPES.why_us"), id: "why_us" },
+      { name: t("TYPES.our_services"), id: "our_services" },
+      { name: t("TYPES.contact_info"), id: "contact_info" },
+      { name: t("TYPES.about_banner"), id: "about_banner" },
+      { name: t("TYPES.goals"), id: "goals" },
+      { name: t("TYPES.core_values"), id: "core_values" },
+      { name: t("TYPES.terms"), id: "terms" },
+      { name: t("TYPES.privacy_policy"), id: "privacy_policy" },
+      { name: t("TYPES.why_us_feature"), id: "why_us_feature" },
+      { name: t("TYPES.our_services_feature"), id: "our_services_feature" },
+      { name: t("TYPES.core_values_feature"), id: "core_values_feature" },
+      { name: t("TYPES.goals_feature"), id: "goals_feature" },
+      { name: t("TYPES.our_vision"), id: "our_vision" },
+      { name: t("TYPES.qa_banner"), id: "qa_banner" },
+      { name: t("TYPES.contact_banner"), id: "contact_banner" },
+      { name: t("TYPES.terms_banner"), id: "terms_banner" },
+      { name: t("TYPES.privacy_banner"), id: "privacy_banner" },
     ],
     type: "select",
     filter: null,
     multiple: false,
   },
 ];
-const localizedItems = computed(() =>
-  items.value.map((section) => ({
-    ...section,
-    title:
-      locale.value === "ar"
-        ? section.ar?.title || section.en?.title || "—"
-        : section.en?.title || section.ar?.title || "—",
-  }))
-);
+const filteredItems = computed(() => {
+  const keyword = searchKeyword.value.toLowerCase();
+
+  return items.value
+    .map((section) => ({
+      ...section,
+      title:
+        locale.value === "ar"
+          ? section.ar?.title || section.en?.title || "—"
+          : section.en?.title || section.ar?.title || "—",
+      typeName: t(`TYPES.${section.type}`) || section.type,
+    }))
+    .filter((section) =>
+      keyword ? section.title.toLowerCase().includes(keyword) : true
+    );
+});
 
 function fetchData() {
   errResponse.value = null;
   loading.value = true;
 
   const params = new URLSearchParams();
+
   if (route.query.page) params.append("page", route.query.page);
-  if (route.query.keyword) params.append("title", route.query.keyword);
   if (route.query.status) params.append("is_active", route.query.status);
+  if (route.query.type) params.append("type", route.query.type);
 
   axios
     .get("sections", { params })
@@ -175,7 +213,6 @@ function fetchData() {
     .catch((err) => {
       loading.value = false;
       errResponse.value = err.response;
-     
     });
 }
 
@@ -185,15 +222,14 @@ function remove(id) {
 }
 
 onMounted(() => {
-  if (route.query.keyword || route.query.status) dataFiltered.value = true;
+  if (route.query.status || route.query.type) dataFiltered.value = true;
   fetchData();
-  console.log("kkkkkkkkkkkkk")
 });
 
 watch(
-  () => route.query,
+  () => [route.query.status, route.query.type],
   () => {
-    if (route.query.keyword || route.query.status) dataFiltered.value = true;
+    if (route.query.status || route.query.type) dataFiltered.value = true;
     fetchData();
   }
 );

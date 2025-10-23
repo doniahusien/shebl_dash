@@ -35,19 +35,6 @@
             />
           </div>
           
-          <div class="mb-5">
-            <base-file
-              modalName="policies"
-              modalType="image"
-              id="image"
-              name="image"
-              :placeholder="t('LABELS.Image')"
-              :label="t('LABELS.Image')"
-              accept="image/png, image/webp, image/jpeg, image/gif"
-              v-model:itemValue="initialValues.preview"
-              v-model:image="initialValues.image"
-            />
-          </div>
 
           <div class="flex items-center justify-end gap-7">
             <button

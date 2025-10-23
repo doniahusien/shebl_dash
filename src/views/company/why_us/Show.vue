@@ -5,7 +5,6 @@
         <loader v-if="loading" />
 
         <div v-else-if="whyUsData">
-          <!-- Breadcrumb -->
           <breadcrumbs
             :icon="whyUsData.icon?.url"
             :items="breads"
@@ -14,9 +13,7 @@
             class="mb-7"
           />
 
-          <!-- Why Us Details -->
           <div class="grid md:grid-cols-3 gap-6">
-            <!-- Left side: Icon and Key -->
             <div>
               <base-card class="shadow-sm border border-gray-100 p-4">
                 <div class="text-center">
@@ -33,7 +30,6 @@
               </base-card>
             </div>
 
-            <!-- Right side: Value and Additional Info -->
             <div class="md:col-span-2">
               <base-card class="shadow-sm border border-gray-100 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -89,7 +85,6 @@ const loading = ref(false);
 const whyUsData = ref(null);
 const breads = ref([]);
 
-// 🧠 Dynamically choose English or Arabic content
 const localizedData = computed(() => {
   if (!whyUsData.value) return {};
   return locale.value === "ar" ? whyUsData.value.ar : whyUsData.value.en;

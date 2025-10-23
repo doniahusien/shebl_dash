@@ -120,7 +120,6 @@
     </div>
   </VeeField>
 
-  <!-- Preview outside upload area -->
   <div
     v-if="preview && !no_preview && !notPreview"
     class="flex items-center gap-3 flex-wrap mt-2"
@@ -139,7 +138,7 @@
         height="60"
         class="rounded-lg h-[60px] w-[80px] object-cover border"
         image-class="rounded-lg h-[60px] w-[80px] object-cover border-line preview_image"
-        :src="preview"
+        :src="preview.url"
         alt="Preview"
         preview
       />
@@ -195,18 +194,11 @@ function onDrop(acceptFiles) {
 function fullPath(p) {
   if (!p) return "";
 
-  // ✅ If backend gives an object { path, url } → use url directly
   if (typeof p === "object" && p.url) {
     return p.url;
   }
-
-  // ✅ If it's a string path, clean it up
-  if (typeof p === "string") {
-    const normalized = p.replace(/\\/g, "/");
-    return normalized.startsWith("/") ? normalized.slice(1) : normalized;
-  }
-
-  return "";
+  console.log(p);
+  return p;
 }
 
 

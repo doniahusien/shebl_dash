@@ -16,8 +16,7 @@
           </h3>
           <action-menu
             class="ms-2"
-            :edit="checkPermission(permissionKey, 'update')"
-            :remove="checkPermission(permissionKey, 'destroy')"
+           
             :item="item"
             :name="url"
             @reload="fetchData"
@@ -62,7 +61,6 @@
 </template>
 
 <script setup>
-import { checkPermission } from "@/utils/permissions";
 
 const props = defineProps({
   item: { required: false, type: Object },

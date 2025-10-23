@@ -3,7 +3,6 @@
     <Switch
       :disabled="loading || disabled"
       :loading="loading"
-      :value="modalValue"
       @click="confirmSwith"
       :class="modalValue ? 'bg-primary' : 'bg-gray-200'"
       class="relative inline-flex h-6 w-11 items-center rounded-full disabled:opacity-50"
@@ -13,15 +12,16 @@
         :class="
           modalValue
             ? locale === 'ar'
-            ? '-translate-x-6'
-            : 'translate-x-6'
+              ? '-translate-x-6'
+              : 'translate-x-6'
             : locale === 'ar'
-            ? '-translate-x-1'
-            : 'translate-x-1'
+              ? '-translate-x-1'
+              : 'translate-x-1'
         "
         class="inline-block h-4 w-4 transform rounded-full bg-white transition"
       ></span>
     </Switch>
+
     <Teleport to="body">
       <Modal
         class="z-[1009]"
@@ -62,39 +62,20 @@ import { toast } from "vue3-toastify";
 import { ref } from "vue";
 import axios from "axios";
 import { useI18n } from "vue-i18n";
-const props = defineProps({
-  model: {
-    required: false,
-  },
-  id: {
-    required: true,
-  },
-  url: {
-    required: false,
-  },
-  modalValue: {
-    required: false,
-  },
-  method: {
-    required: false,
-    default: "PATCH",
-  },
 
-  color: {
-    required: false,
-    default: "success",
-  },
-  disabled: {
-    required: false,
-    default: false,
-  },
+const props = defineProps({
+  model: { required: false },
+  id: { required: true },
+  url: { required: false },
+  modalValue: { required: false },
+  method: { required: false, default: "POST" },
+  color: { required: false, default: "success" },
+  disabled: { required: false, default: false },
 });
 
 const loading = ref(false);
-
 const openModal = ref(false);
 const { t, locale } = useI18n();
-
 const emit = defineEmits(["update:modalValue", "close", "refresh"]);
 
 function confirmSwith(event) {
@@ -104,32 +85,29 @@ function confirmSwith(event) {
 
 function confirm() {
   const frmData = new FormData();
-  const status = !props.modalValue;
+  const status = props.modalValue ? 0 : 1;
+  const url = props.url || `sections/${props.id}`;
 
-  let url;
-  if (props.url) {
-    url = props.url;
-    frmData.append("_method", props.method);
-  } else {
-    url = `is_active/${props.id}`;
+  frmData.append("_method", "PUT");
+  frmData.append("status", status);
+  if (props.model) frmData.append("model", props.model);
 
-    frmData.append("model", props.model);
-    frmData.append("is_active", +status);
-    frmData.append("_method", "PUT");
-  }
+  loading.value = true;
 
   axios
     .post(url, frmData)
-    .then((res) => {
+    .then(() => {
       emit("update:modalValue", !props.modalValue);
       emit("refresh");
-
       toast.success(t("Edited successfully"));
       openModal.value = false;
     })
-    .catch((err) =>
-      toast.error(err.response.data.message ?? err.response.data.messages)
-    );
+    .catch((err) => {
+      toast.error(err.response?.data?.message ?? err.response?.data?.messages);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 </script>
 

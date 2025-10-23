@@ -223,7 +223,7 @@ const router = createRouter({
         {
           path: "settings",
           name: "settings",
-          component: () => import("@/views/settings/web-settings/index.vue"),
+          component: () => import("@/views/settings/index.vue"),
           meta: {
             auth: true,
           },
@@ -246,14 +246,7 @@ const router = createRouter({
               },
               component: () => import("@/views/profile/Account.vue"),
             },
-            {
-              path: "doctor",
-              name: "doctor-profile",
-              meta: {
-                auth: true,
-              },
-              component: () => import("@/views/profile/DoctorAccount.vue"),
-            },
+           
             {
               path: "reset-password",
               name: "resetProfilePassword",

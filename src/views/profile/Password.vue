@@ -1,5 +1,5 @@
 <template>
-  <base-card1 :title="$t('TITLES.Account Information')">
+  <base-card1 :title="$t('TITLES.Change Password')">
     <VeeForm
       @click.stop
       as="div"
@@ -7,7 +7,7 @@
       :validation-schema="schema"
     >
       <form>
-        <div class="grid md:grid-cols-2 gap-2">
+        <div class="grid grid-cols-1 gap-7">
           <base-password
             id="oPassword"
             name="oPassword"
@@ -15,7 +15,6 @@
             label="oPassword"
           />
 
-          <div></div>
           <base-password
             id="password"
             name="password"

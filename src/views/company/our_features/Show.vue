@@ -5,7 +5,6 @@
         <loader v-if="loading" />
 
         <div v-else-if="feature">
-          <!-- Breadcrumb -->
           <breadcrumbs
             :items="breads"
             :title="localizedData.title"
@@ -13,11 +12,8 @@
             class="mb-7"
           />
 
-          <!-- Feature Layout -->
           <div class="grid md:grid-cols-2 gap-8 items-start">
-            <!-- Left Section (Image + Icon + Title) -->
             <div class="flex flex-col items-center">
-              <!-- Feature Main Image -->
               <div
                 v-if="feature.background?.url"
                 class="w-full h-64 rounded-2xl overflow-hidden shadow-sm border border-gray-100 mb-6"
@@ -29,7 +25,6 @@
                 />
               </div>
 
-              <!-- Icon inside a colored circle -->
               <div
                 v-if="feature.icon?.url"
                 class="w-24 h-24 flex items-center justify-center rounded-full bg-gray-100 shadow-inner mb-4"
@@ -41,13 +36,11 @@
                 />
               </div>
 
-              <!-- Title -->
               <h2 class="text-2xl font-bold text-gray-900 text-center">
                 {{ localizedData.title }}
               </h2>
             </div>
 
-            <!-- Right Section (Details) -->
             <div>
               <base-card class="shadow-sm border border-gray-100 p-6">
                 <h3 class="text-xl font-semibold text-gray-900 mb-5 flex items-center gap-2">
@@ -56,7 +49,6 @@
                 </h3>
 
                 <div class="space-y-5">
-                  <!-- Title -->
                   <div>
                     <h4 class="text-sm text-gray-500 mb-1">
                       {{ $t("LABELS.title") }}
@@ -66,7 +58,6 @@
                     </p>
                   </div>
 
-                  <!-- Description -->
                   <div>
                     <h4 class="text-sm text-gray-500 mb-2">
                       {{ $t("LABELS.description") }}

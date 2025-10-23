@@ -5,15 +5,24 @@
     <div
       class="bg-white rounded-3xl h-full shadow-[0_7px_6px_0px,rgba(#B1B1B11A)] md:p-7 flex-1 flex flex-col"
     >
-      <base-filter
-        v-if="items.length || dataFiltered"
-        name="ourFeatures"
-        :inputs="inputs"
-        :btn-name="t(`BUTTONS.add`, { name: t('LABELS.Feature') })"
-        icon="fas fa-plus"
-        :keyword="true"
-        @action="$router.push('/our_features/form')"
-      />
+      <div class="flex justify-end mb-5">
+        <button
+          class="bg-primary text-white px-5 py-2 rounded-lg flex items-center gap-2 hover:bg-primary/90 transition"
+          @click="$router.push('/our_features/form')"
+        >
+          <i class="fas fa-plus"></i>
+          {{ t(`BUTTONS.add`, { name: t('LABELS.Feature') }) }}
+        </button>
+      </div>
+
+      <div class="mb-5 mt-2 flex items-center gap-3">
+        <input
+          v-model="searchKeyword"
+          type="text"
+          :placeholder="$t('byTitle')"
+          class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+      </div>
 
       <Loader v-if="loading" />
 
@@ -21,42 +30,39 @@
         <NotFound v-if="errResponse?.status === 404" />
         <GlobalError v-else-if="errResponse?.status === 500" />
 
-        <div v-else :class="!items.length ? 'h-full' : ''">
-          <data-table :headers="headers" :items="localizedItems" :loading="loading" hide-footer>
+        <div v-else :class="!filteredFeatures.length ? 'h-full' : ''">
+          <data-table
+            :headers="headers"
+            :items="filteredFeatures"
+            :loading="loading"
+            hide-footer
+          >
             <template #loading>
               <loader class="py-7" />
             </template>
 
             <template #empty-message>
-              <div
-                v-if="!$route.query.keyword && !$route.query.status"
-                class="h-full flex flex-col items-center justify-center space-y-6"
-              >
-                <div class="text-center">
-                  <h3 class="mt-4 font-semibold text-text text-center">
-                    {{
-                      $t("TITLES.No have been added yet", {
-                        name: $t("LABELS.Features"),
-                      })
-                    }}
-                  </h3>
-                </div>
-              </div>
-
-              <div
-                v-else
-                class="h-full flex flex-col items-center justify-center space-y-6"
-              >
+              <div class="h-full flex flex-col items-center justify-center space-y-6">
                 <img src="@/assets/images/search.png" alt="no data" class="mx-auto" />
                 <h3 class="mt-4 font-semibold text-text text-center">
-                  {{ $t("TITLES.No Search result") }}
+                  {{
+                    filteredFeatures.length === 0
+                      ? $t("TITLES.No have been added yet", {
+                          name: $t("LABELS.Features"),
+                        })
+                      : $t("TITLES.No Search result")
+                  }}
                 </h3>
               </div>
             </template>
+            <template #item-icon="{ icon }">
+              <div class="flex justify-start">
+                <img v-if="icon?.url" :src="icon.url" alt="icon" class="w-8 h-8" />
+              </div>
+            </template>
 
-            <!-- 🧱 Columns -->
-            <template #item-title="{ title, icon, description }">
-              <small-details-card :image="icon?.url" :title="title" :text="description" />
+            <template #item-title="{ title }">
+              <small-details-card :title="title"/>
             </template>
 
             <template #item-background="{ background }">
@@ -67,8 +73,6 @@
               />
               <span v-else>-</span>
             </template>
-
-        
 
             <template #item-actions="{ id }">
               <div class="flex items-center gap-4">
@@ -108,46 +112,39 @@ const errResponse = ref(null);
 const loading = ref(true);
 const items = ref([]);
 const paginator = ref(null);
-const dataFiltered = ref(false);
+const searchKeyword = ref("");
 
 const breads = [
   { path: "/", name: t("TITLES.home") },
-  { path: "/our-features", name: t("LABELS.homeServices") },
+  { path: "/our-features", name: t("LABELS.Features") },
 ];
 
 const headers = [
+  { text: t("LABELS.Icon"), align: "start", sortable: false, value: "icon" },
   { text: t("LABELS.Name"), align: "start", sortable: false, value: "title" },
+  { text: t("LABELS.Background"), align: "start", sortable: false, value: "background" },
   { text: t("TITLES.actions"), align: "start", sortable: false, value: "actions" },
 ];
 
-const inputs = [
-  {
-    name: "status",
-    placeholder: "status",
-    options: [
-      { name: t("STATUS.All"), id: "" },
-      { name: t("LABELS.Active"), id: 1 },
-      { name: t("LABELS.Inactive"), id: 0 },
-    ],
-    type: "select",
-    filter: null,
-    multiple: false,
-  },
-];
+const filteredFeatures = computed(() => {
+  const keyword = searchKeyword.value.toLowerCase();
 
-const localizedItems = computed(() =>
-  items.value.map((feature) => ({
-    ...feature,
-    title:
-      locale.value === "ar"
-        ? feature.ar?.title || feature.en?.title || "—"
-        : feature.en?.title || feature.ar?.title || "—",
-    description:
-      locale.value === "ar"
-        ? feature.ar?.description || feature.en?.description || ""
-        : feature.en?.description || feature.ar?.description || "",
-  }))
-);
+  return items.value
+    .map((feature) => ({
+      ...feature,
+      title:
+        locale.value === "ar"
+          ? feature.ar?.title || feature.en?.title || "—"
+          : feature.en?.title || feature.ar?.title || "—",
+      description:
+        locale.value === "ar"
+          ? feature.ar?.description || feature.en?.description || ""
+          : feature.en?.description || feature.ar?.description || "",
+    }))
+    .filter((feature) =>
+      keyword ? feature.title.toLowerCase().includes(keyword) : true
+    );
+});
 
 function fetchData() {
   errResponse.value = null;
@@ -155,8 +152,6 @@ function fetchData() {
 
   const params = new URLSearchParams();
   if (route.query.page) params.append("page", route.query.page);
-  if (route.query.keyword) params.append("title", route.query.keyword);
-  if (route.query.status) params.append("is_active", route.query.status);
 
   axios
     .get("our-features", { params })
@@ -176,20 +171,6 @@ function remove(id) {
   if (paginator.value?.total) paginator.value.total--;
 }
 
-onMounted(() => {
-  if (route.query.keyword || route.query.status) dataFiltered.value = true;
-  fetchData();
-});
-
-watch(
-  () => route.query,
-  () => {
-    if (route.query.keyword || route.query.status) dataFiltered.value = true;
-    fetchData();
-  }
-);
-
-watch(locale, () => {
-  fetchData();
-});
+onMounted(fetchData);
+watch(locale, fetchData);
 </script>

@@ -78,20 +78,13 @@ const sidebar = ref([
   {
     label: t("LABELS.General"),
     list: [
-     
-     /*  {
-        title: t("LABELS.About"),
-        path: "about",
-        icon: "pages",
-        type: "general",
-        active: "about",
-      }, */
+
       {
         title: t("LABELS.Features"),
         path: "our_features",
         icon: "pages",
         type: "general",
-        active: "features",
+        active: "our_features",
       },
          {
         title: t("LABELS.faq"),

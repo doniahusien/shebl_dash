@@ -5,7 +5,6 @@
         <loader v-if="loading" />
 
         <div v-else-if="questionItem">
-          <!-- Breadcrumb -->
           <breadcrumbs
             :items="breads"
             :title="localizedData.question"
@@ -13,22 +12,15 @@
             class="mb-8 text-xl font-medium text-gray-700"
           />
 
-          <!-- Active Status (Top) -->
-          <div
-            class="px-4 py-2 mb-6 rounded-full text-sm font-medium"
-            :class="questionItem.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'"
-          >
-            {{ questionItem.is_active ? t('STATUS.active') : t('STATUS.inactive') }}
-          </div>
+ 
 
-          <!-- Question and Answer Stack -->
+          
           <div class="flex flex-col gap-6">
-            <!-- Question Text -->
+         
             <h2 class="text-3xl font-semibold text-gray-900 mb-4">
               {{ localizedData.question }}
             </h2>
 
-            <!-- Answer -->
             <div>
               <h3 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <svg-icon name="message-square" class="text-primary w-5 h-5" />
@@ -95,24 +87,20 @@ onMounted(fetchQuestion);
 </script>
 
 <style scoped>
-/* Typography for clarity */
 .prose p {
   margin-bottom: 1rem;
   font-size: 1rem;
   line-height: 1.6;
 }
 
-/* Question Text Styling */
 .text-3xl {
   font-size: 1.875rem;
 }
 
-/* Answer section */
 .text-2xl {
   font-size: 1.5rem;
 }
 
-/* Status styling */
 .bg-green-100 {
   background-color: #d1f7c4;
 }
@@ -125,12 +113,10 @@ onMounted(fetchQuestion);
   color: #4a4a4a;
 }
 
-/* Flex container for vertical stack */
 .flex-col {
   flex-direction: column;
 }
 
-/* Text and spacing improvements */
 .mb-4 {
   margin-bottom: 1rem;
 }

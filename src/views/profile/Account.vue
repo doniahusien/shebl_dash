@@ -148,7 +148,7 @@ function getData() {
     initialValues.name = result.full_name;
     initialValues.email = result.email;
     appAuth.userData = result;
-    initialValues.preview = result.image.url ?? result.logo;
+    initialValues.preview = result.image.url;
     loading.value = false;
   });
 }

@@ -1,14 +1,35 @@
 {
+  "byTitle":"search by title",
+  "byQut":"search by question",
+  "byFeature":"search by feature",
+  "byKey":"search by Key",
+  "TYPES": {
+    "main_banner": "Main Banner",
+    "All":"All",
+    "about": "About",
+    "why_us": "Why Us",
+    "our_services": "Our Services",
+    "contact_info": "Contact Info",
+    "about_banner": "About Banner",
+    "goals": "Goals",
+    "core_values": "Core Values",
+    "terms": "Terms and Conditions",
+    "privacy_policy": "Privacy Policy",
+
+    "why_us_feature": "Why Us Feature",
+    "our_services_feature": "Our Services Feature",
+    "core_values_feature": "Core Values Feature",
+    "goals_feature": "Goals Feature",
+    "our_vision":"Our vision",
+     "qa_banner": "FAQ Banner",
+  "contact_banner": "Contact Us Banner",
+  "terms_banner": "Terms Banner",
+  "privacy_banner": "Privacy Banner"
+  },
   "sidebar": {
-    "countries": "Countries",
     "dashboard": "Dashboard",
-    "brandSettings": "Brand Settings",
-    "storeSetup": "Store Setup",
-    "menuSetup": "Menu Setup",
-    "settings": "Settings",
-    "reports": "Reports",
-    "Loyalty": "Loyalty",
-    "crm": "CRM"
+    "settings": "Settings"
+   
   },
   "locale": {
     "ar": "EN",
@@ -30,26 +51,15 @@
     "closeTicket": "Close Ticket",
     "AreYouDoneComplainingAndWantToClose":"Have you finished your complaint or suggestion and want to close it?",
    
-    "You dont have any notifications yet": "You don't have any notifications yet",
-    "No notifications": "No notifications",
+    
     "finalDelete": "Are you sure about the delete?",
-    "Receipt": "Receipt",
+    
     "No Search result": "No Search result",
     "Delivery Address": "Delivery Address",
-    "Products Details":"Products Details",
-    "Deal Details":"Deal Details",
-    "Privacy Policy": "Privacy Policy",
-    "TermsAndConditions": "Terms & conditions",
     "actions": "Actions",
     "Edit": "Edit {name}",
     "new": "New {name}",
-    "scopeSettings": "Scope settings",
-    "countries": "Countries",
-    "cities": "Cities",
-    "City Data": "City Data",
-    "Cities": "Cities",
-    "subCategories": "Sub categories",
-    "createdAt": "Created at",
+    
     "Details" :"{name} Details",
 
     "home":"Home",
@@ -57,7 +67,7 @@
     "sub-categories": "Sub categories",
     "welcomeTo": "Welcome",
     "Login": "Login!",
-    "ifYouDontReceiveCode": "Resend code after ",
+    
     "Phone number": "Phone Number",
     "verifyPhoneNumber":"Verify Phone Number",
     "New Register": "New Register!",
@@ -72,6 +82,7 @@
     "All Copyrights are reserved by": "All Copyrights are reserved by"
   },
   "LABELS":{
+    "Type":"Type",
     "coming_soon_message": "This page is under construction. Coming soon!",
     "Goals":"Goals",
     "faq":"FAQ",
