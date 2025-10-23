@@ -1,0 +1,10 @@
+# Python example
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Node example
+node_modules/
+dist/
+build/
