@@ -74,7 +74,7 @@ async function getData() {
       features: result.features || [],
     };
   } catch (err) {
-    console.error("❌ Failed to fetch section:", err);
+    console.error("Failed to fetch section:", err);
   } finally {
     loading.value = false;
   }

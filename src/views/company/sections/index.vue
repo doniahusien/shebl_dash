@@ -5,21 +5,22 @@
     <div
       class="bg-white rounded-3xl h-full shadow-[0_7px_6px_0px,rgba(#B1B1B11A)] md:p-7 flex-1 flex flex-col"
     >
-      <base-filter
-        name="sections"
-        :inputs="inputs"
-        :btn-name="t(`BUTTONS.add`, { name: t('LABELS.section') })"
-        icon="fas fa-plus"
-        :keyword="false"
-        @action="$router.push('/sections/form')"
-      />
-
-      <div class="mb-5 mt-2 flex items-center gap-3">
-        <input
-          v-model="searchKeyword"
-          type="text"
-             :placeholder="$t('byFeature')"
-          class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary"
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="flex items-center gap-3">
+          <input
+            v-model="searchKeyword"
+            type="text"
+            :placeholder="$t('byTitle')"
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+        <base-filter
+          name="sections"
+          :inputs="inputs"
+          :btn-name="t(`BUTTONS.add`, { name: t('LABELS.section') })"
+          icon="fas fa-plus"
+          :keyword="false"
+          @action="$router.push('/sections/form')"
         />
       </div>
 
@@ -86,7 +87,9 @@
                   :url="`sections/${id}`"
                   :method="'POST'"
                   :modalValue="is_active"
-                  @update:modalValue="items.find((item) => item.id === id).is_active = $event"
+                  @update:modalValue="
+                    items.find((item) => item.id === id).is_active = $event
+                  "
                 />
               </div>
             </template>
@@ -130,7 +133,7 @@ const loading = ref(true);
 const items = ref([]);
 const paginator = ref(null);
 const dataFiltered = ref(false);
-const searchKeyword = ref(""); 
+const searchKeyword = ref("");
 
 const breads = [
   { path: "/", name: t("TITLES.home") },
