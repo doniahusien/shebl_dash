@@ -23,8 +23,8 @@ import Navbar from "@/layouts/auth/Navbar.vue";
 </script>
 <style lang="scss" scoped>
 .auth_bg {
-  background: url("@/assets/images/bg/logo_background.png");
-  @apply bg-no-repeat bg-cover bg-sub/50;
+/*   background: url("@/assets/images/bg/logo_background.png"); */
+  @apply bg-no-repeat bg-cover bg-gray-200/100;
 
 }
 .auth_wrapper {

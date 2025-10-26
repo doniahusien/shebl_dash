@@ -25,6 +25,7 @@
         <base-password
           id="password"
           name="password"
+          :label="t('password')"
           :placeholder="t('LABELS.Enter', { name: t('LABELS.password') })"
           icon="key"
         />
