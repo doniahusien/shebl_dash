@@ -151,8 +151,6 @@
             </div>
           </div>
         </FieldArray>
-
-        <!-- Buttons -->
         <div class="flex justify-end items-center gap-5 pt-4 border-t border-line">
           <router-link to="/sections" class="text-sub font-semibold">
             {{ $t("BUTTONS.cancel") }}

@@ -1,84 +1,92 @@
 <template>
-  <div class="h-full flex flex-col">
-    <div class="bg-white rounded-3xl h-full shadow-md md:p-4 flex-1 flex flex-col">
-      <div class="bg-white p-3">
-        <loader v-if="loading" />
+  <div class="flex flex-col h-full">
+    <div class="flex-1 flex flex-col bg-white rounded-3xl shadow-md md:p-5">
+      <loader v-if="loading" class="my-auto" />
 
-        <div v-else-if="section">
-          <!-- Breadcrumb -->
-          <breadcrumbs
-            :icon="section.icon?.url"
-            :items="breads"
-            :title="localizedData.title"
-            back="/sections"
-            class="mb-7"
-          />
+      <div v-else-if="section" class="flex flex-col gap-6">
+        <breadcrumbs
+          :items="breads"
+          :title="localizedData.title"
+          back="/sections"
+          class="mb-4"
+        />
 
-          <!-- Section Details -->
-          <div class="grid md:grid-cols-3 gap-6">
-            <!-- Left side -->
-            <div>
-              <base-card class="shadow-sm border border-gray-100 p-4">
-                <div class="text-center">
-                  <img
-                    v-if="section.image?.url"
-                    :src="section.image.url"
-                    alt="Section image"
-                    class="w-48 h-48 rounded-2xl object-cover border-4 border-white shadow-lg mx-auto mb-4"
-                  />
-                  <h2 class="text-2xl font-bold text-gray-900">
-                    {{ localizedData.title }}
-                  </h2>
-                  <p class="text-sm text-gray-500 mt-1">
-                    {{ section.type }}
-                  </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <base-card
+            class="p-5 border border-gray-100 shadow-sm text-center relative overflow-hidden"
+          >
+            <img
+              v-if="section.image?.url"
+              :src="section.image.url"
+              alt="Section image"
+              class="w-48 h-48 rounded-2xl object-cover border-4 border-white shadow-md mx-auto mb-4"
+            />
+            <h2 class="text-2xl font-bold text-gray-900">
+              {{ localizedData.title }}
+            </h2>
 
-                  <div
-                    class="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full text-sm font-medium"
-                    :class="section.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
-                  >
-                    <span
-                      class="w-2 h-2 rounded-full"
-                      :class="section.is_active ? 'bg-green-500' : 'bg-red-500'"
-                    ></span>
-                    {{ section.is_active ? $t('LABELS.active') : $t('LABELS.inactive') }}
-                  </div>
-                </div>
-              </base-card>
+            <p class="text-sm text-gray-500 mt-1">
+              {{ t(`LABELS.Type`) }}:
+              {{ t(`TYPES.${section.type}`) || section.type }}
+            </p>
+
+            <div
+              class="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full text-sm font-medium"
+              :class="
+                section.is_active
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-red-100 text-red-700'
+              "
+            >
+              <span
+                class="w-2 h-2 rounded-full"
+                :class="section.is_active ? 'bg-green-500' : 'bg-red-500'"
+              ></span>
+              {{ section.is_active ? $t("LABELS.active") : $t("LABELS.inactive") }}
             </div>
+          </base-card>
 
-            <!-- Right side -->
-            <div class="md:col-span-2">
-              <base-card class="shadow-sm border border-gray-100 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <svg-icon name="info" />
-                  {{ $t('LABELS.section_details') }}
-                </h3>
+          <base-card class="md:col-span-2 p-6 border border-gray-100 shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-900 mb-5 flex items-center gap-2">
+              <svg-icon name="info" />
+              {{ $t("LABELS.section_details") }}
+            </h3>
 
-                <div class="space-y-4">
-                  <div>
-                    <h4 class="text-sm text-gray-500 mb-1">
-                      {{ $t('LABELS.title') }}
-                    </h4>
-                    <p class="text-gray-900 font-medium">
-                      {{ localizedData.title }}
-                    </p>
-                  </div>
+            <div class="space-y-5">
+              <div
+                v-if="section.icon?.url && section.icon.url.trim() !== ' '"
+                class="flex items-center justify-start mb-4"
+              >
+                <h4 class="text-sm text-gray-500 mb-1">
+                  {{ $t("LABELS.Icon") }}
+                </h4>
+                <img
+                  :src="section.icon.url"
+                  alt="Section icon"
+                  class="w-16 h-16 object-contain rounded-xl border border-gray-100 shadow-sm bg-white p-2"
+                />
+              </div>
+              <div>
+                <h4 class="text-sm text-gray-500 mb-1">
+                  {{ $t("LABELS.title") }}
+                </h4>
+                <p class="text-gray-900 font-medium">
+                  {{ localizedData.title }}
+                </p>
+              </div>
 
-                  <div>
-                    <h4 class="text-sm text-gray-500 mb-1">
-                      {{ $t('LABELS.description') }}
-                    </h4>
-                    <div
-                      class="prose max-w-none text-gray-800"
-                      :dir="locale === 'ar' ? 'rtl' : 'ltr'"
-                      v-html="localizedData.description"
-                    ></div>
-                  </div>
-                </div>
-              </base-card>
+              <div>
+                <h4 class="text-sm text-gray-500 mb-1">
+                  {{ $t("LABELS.description") }}
+                </h4>
+                <div
+                  class="prose max-w-none text-gray-800 leading-relaxed"
+                  :dir="locale === 'ar' ? 'rtl' : 'ltr'"
+                  v-html="localizedData.description"
+                ></div>
+              </div>
             </div>
-          </div>
+          </base-card>
         </div>
       </div>
     </div>
